@@ -30,6 +30,26 @@ BMP *newBMP(){
 		return NULL;
 	}
 }
+void createHeadByPic(BMP *newPic, BMP *oldPic){
+	memcpy(newPic->fileHead,oldPic->fileHead,sizeof(FILEHEADER));
+	memcpy(newPic->infoHead,oldPic->infoHead,sizeof(INFOHEADER));
+}
+int freeBMP(BMP* pic){
+	if (pic==NULL) return 1;
+	if ((pic->colorInfo!=NULL)&&(pic->infoHead)){
+		size_t h = pic->infoHead->biHeight;
+		size_t w = pic->infoHead->biWidth;
+		for (size_t i = 0; i < h; i++){
+			for (size_t j = 0; i < w; i++){
+				free(cell(pic,i,j));
+			}
+		}
+		free(pic->infoHead);
+	}
+	if (pic->colorSet!=NULL) free(pic->colorSet);
+	if (pic->infoHead!=NULL) free(pic->infoHead);
+	if (pic->fileHead!=NULL) free(pic->fileHead);
+}
 /**
  * @brief Create a Space By Head object
  * 
@@ -44,7 +64,7 @@ int createSpaceByHead(BMP* pic){
 }
 BMP *bmpRead(const char *inPutName){
     FILE* fp;
-	printf("%s\n",inPutName);
+	// printf("%s\n",inPutName);
 	if ((fp=fopen(inPutName,"rb"))==NULL){
 		printf("in if\n");
 		printf("fail to open");
@@ -60,7 +80,6 @@ BMP *bmpRead(const char *inPutName){
 		pic->colorSet = NULL;
 		long w = pic->infoHead->biWidth;
 		long h = pic->infoHead->biHeight;
-		printf("begin reading picture\n");
 		if ((w<=0)||(h<=0)){
 			printf("error size: height = %ld, weight = %ld\n",h,w);
 			return NULL;
@@ -81,7 +100,7 @@ BMP *bmpRead(const char *inPutName){
 			}
 		}			
 		fclose(fp);
-		printf("finish reading picture\n");
+		// printf("finish reading picture\n");
 		return pic;
 	}
 	else {
@@ -91,13 +110,13 @@ BMP *bmpRead(const char *inPutName){
 }
 int bmpWrite(BMP* pic, char* outPutName){
     FILE* fp;
-	printf("%s\n",outPutName);
+	// printf("%s\n",outPutName);
 	if ((fp=fopen(outPutName,"wb"))==NULL){
-		printf("in write if\n");
+		// printf("in write if\n");
 		printf("fail to write\n");
 		return 1;
 	}
-	printf("can write open\n");
+	// printf("can write open\n");
 	if ((pic!=NULL)&&(pic->fileHead!=NULL)){
 		fwrite(pic->fileHead,sizeof(FILEHEADER),1,fp);
 		if (pic->infoHead!=NULL) fwrite(pic->infoHead,sizeof(INFOHEADER),1,fp);

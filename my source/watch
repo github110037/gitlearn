@@ -1,0 +1,13 @@
+gcc -g -c Smooth.c -o Smooth.o
+gcc  -g test.o BMP.o Smooth.o -o test
+./test
+start main
+picture size: height = 3000, weight = 4000
+reading clocks number is 2079291546
+successfully write originPic
+writing clocks number is 310934214
+smooth_basic clocks number is 642903732
+smooth_code  clocks number is 565736886
+smooth_cache clocks number is 577859994
+successfully write smooth_basic.bmp
+end main

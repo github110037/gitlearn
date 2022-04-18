@@ -43,6 +43,7 @@ typedef struct {
 	uint8_t red;
 	uint8_t blue;
 	uint8_t green;
+	uint8_t nop;
 }RBGINFO;
 typedef struct {
 	FILEHEADER *fileHead;
@@ -61,4 +62,5 @@ BMP *newBMP();
  * @return int 
  */
 int createSpaceByHead(BMP* pic);
+void createHeadByPic(BMP *newPic, BMP *oldPic);
 #endif
