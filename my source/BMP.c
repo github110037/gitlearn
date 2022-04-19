@@ -62,6 +62,9 @@ int createSpaceByHead(BMP* pic){
 	if (pic->colorInfo!=NULL) return 1;
 	else return 0;
 }
+BMP *randBMP(){
+	
+}
 BMP *bmpRead(const char *inPutName){
     FILE* fp;
 	// printf("%s\n",inPutName);
